@@ -1,6 +1,5 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
+"use client";
 
 export default function Home() {
-  return <h1>Home page</h1>;
+  return 
 }
