@@ -5,6 +5,7 @@ import DatePicker from "@/components/DatePicker";
 import Input from "@/components/Input";
 import { Trip } from "@prisma/client";
 import { error } from "console";
+import { differenceInDays } from "date-fns";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Controller } from "react-hook-form";
@@ -13,6 +14,7 @@ interface TripReservationProps {
   tripStartDate: Date;
   tripEndDate: Date;
   maxGuests: number;
+  pricePerDay: number;
 }
 
 interface TripReservationForm {
@@ -21,13 +23,18 @@ interface TripReservationForm {
   endDate: Date | null;
 }
 
-const TripReservation = ({ maxGuests, tripStartDate, tripEndDate }: TripReservationProps) => {
+const TripReservation = ({
+  maxGuests,
+  tripStartDate,
+  tripEndDate,
+  pricePerDay,
+}: TripReservationProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
-    watch
+    watch,
   } = useForm<TripReservationForm>();
 
   const onSubmit = (data: any) => {
@@ -35,6 +42,7 @@ const TripReservation = ({ maxGuests, tripStartDate, tripEndDate }: TripReservat
   };
 
   const startDate = watch("startDate");
+  const endDate = watch("endDate");
 
   return (
     <div>
@@ -79,7 +87,7 @@ const TripReservation = ({ maxGuests, tripStartDate, tripEndDate }: TripReservat
                 selected={field.value}
                 className="w-full"
                 maxDate={tripEndDate}
-                minDate={startDate ?? tripStartDate }
+                minDate={startDate ?? tripStartDate}
               />
             )}
           />
@@ -99,7 +107,10 @@ const TripReservation = ({ maxGuests, tripStartDate, tripEndDate }: TripReservat
 
         <div className="flex justify-between mt-3">
           <p className="font-medium text-sm text-primaryDarker">Total: </p>
-          <p className="font-medium text-sm text-primaryDarker">R$2500 </p>
+          <p className="font-medium text-sm text-primaryDarker">
+            {startDate && endDate ? 
+            `R$${differenceInDays(endDate, startDate) * pricePerDay}` ?? 1: "R$ 0"}
+          </p>
         </div>
 
         <div className="pb-10 border-b border-grayLighter w-full">
