@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
 interface TripReservationProps {
+  tripId: string;
   tripStartDate: Date;
   tripEndDate: Date;
   maxGuests: number;
@@ -24,6 +25,7 @@ interface TripReservationForm {
 }
 
 const TripReservation = ({
+  tripId,
   maxGuests,
   tripStartDate,
   tripEndDate,
@@ -37,8 +39,20 @@ const TripReservation = ({
     watch,
   } = useForm<TripReservationForm>();
 
-  const onSubmit = (data: any) => {
-    console.log({ data });
+  const onSubmit = async (data: TripReservationForm) => {
+    const response = await fetch("http://localhost:3000/api/trips/check", {
+      method: "POST",
+      body: Buffer.from(
+        JSON.stringify({
+          startDate: data.startDate,
+          endDate: data.endDate,
+          tripId,
+        })
+      ),
+    });
+    const res = await response.json();
+
+    console.log({res})
   };
 
   const startDate = watch("startDate");
@@ -108,8 +122,9 @@ const TripReservation = ({
         <div className="flex justify-between mt-3">
           <p className="font-medium text-sm text-primaryDarker">Total: </p>
           <p className="font-medium text-sm text-primaryDarker">
-            {startDate && endDate ? 
-            `R$${differenceInDays(endDate, startDate) * pricePerDay}` ?? 1: "R$ 0"}
+            {startDate && endDate
+              ? `R$${differenceInDays(endDate, startDate) * pricePerDay}` ?? 1
+              : "R$ 0"}
           </p>
         </div>
 
