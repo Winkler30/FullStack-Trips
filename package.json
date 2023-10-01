@@ -22,6 +22,7 @@
     "react-currency-input-field": "^3.6.11",
     "react-datepicker": "^4.18.0",
     "react-dom": "latest",
+    "react-hook-form": "^7.46.2",
     "react-icon": "^1.0.0",
     "react-icons": "^4.11.0",
     "tailwind-merge": "^1.14.0"
