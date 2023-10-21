@@ -15,7 +15,7 @@ interface UserReservationItemProps {
   fetchReservations: () => void;
 }
 
-const UserReservationItem = ({ reservation }: UserReservationItemProps) => {
+const UserReservationItem = ({ reservation, fetchReservations }: UserReservationItemProps) => {
   const router = useRouter();
   const { trip } = reservation;
 
@@ -32,7 +32,7 @@ const UserReservationItem = ({ reservation }: UserReservationItemProps) => {
       position: "bottom-center",
     });
 
-
+    fetchReservations();
   };
 
   return (
