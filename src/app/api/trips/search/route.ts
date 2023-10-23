@@ -1,11 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-const generateSearchQuery = (
-  text: string,
-  startDate?: string | null,
-  budget?: string | null
-) => {
+const generateSearchQuery = (text: string, startDate?: string | null, budget?: string | null) => {
   let searchQuery: any = {
     OR: [
       {
@@ -24,12 +20,14 @@ const generateSearchQuery = (
         },
       },
     ],
+    AND: [],
   };
 
-  if (startDate  && startDate != 'null') {
+  if (startDate !== "undefined" && startDate !== "null") {
     searchQuery = {
       ...searchQuery,
       AND: [
+        ...searchQuery.AND,
         {
           startDate: {
             gte: startDate,
@@ -39,12 +37,15 @@ const generateSearchQuery = (
     };
   }
 
-  if (budget != 'undefined' && budget != 'null') {
+  console.log({ budget });
+
+  if (budget !== "undefined" && budget !== "null") {
     searchQuery = {
       ...searchQuery,
       AND: [
+        ...searchQuery.AND,
         {
-          pricePerDaya: {
+          pricePerDay: {
             lte: Number(budget),
           },
         },

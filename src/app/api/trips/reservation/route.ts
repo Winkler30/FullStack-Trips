@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   const req = await request.json();
 
-  const { startDate, endDate, tripId, userId, totalPaid, guests } = req;
+  const { startDate, endDate, userId, tripId, totalPaid, guests } = req;
 
   const trip = await prisma.trip.findUnique({
     where: {
@@ -26,8 +26,8 @@ export async function POST(request: Request) {
     data: {
       startDate: new Date(startDate),
       endDate: new Date(endDate),
-      tripId,
       userId,
+      tripId,
       totalPaid,
       guests,
     },
